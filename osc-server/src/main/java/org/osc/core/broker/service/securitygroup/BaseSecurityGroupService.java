@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.jclouds.openstack.keystone.v2_0.domain.Tenant;
+import org.openstack4j.model.identity.v2.Tenant;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroup;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroupMember;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroupMemberType;
@@ -36,9 +36,9 @@ import org.osc.core.broker.model.entities.virtualization.openstack.Subnet;
 import org.osc.core.broker.model.entities.virtualization.openstack.VM;
 import org.osc.core.broker.model.entities.virtualization.openstack.VMPort;
 import org.osc.core.broker.model.plugin.sdncontroller.ControllerType;
-import org.osc.core.broker.rest.client.openstack.jcloud.Endpoint;
-import org.osc.core.broker.rest.client.openstack.jcloud.JCloudKeyStone;
-import org.osc.core.broker.rest.client.openstack.jcloud.JCloudNova;
+import org.osc.core.broker.rest.client.openstack.openstack4j.Endpoint;
+import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone;
+import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4JNova;
 import org.osc.core.broker.service.ServiceDispatcher;
 import org.osc.core.broker.service.common.VmidcMessages;
 import org.osc.core.broker.service.common.VmidcMessages_;
@@ -84,27 +84,15 @@ public abstract class BaseSecurityGroupService<I extends Request, O extends Resp
                     "Creation of Security Groups is not allowed in the absence of SDN Controller.");
         }
 
-        JCloudKeyStone keystone = null;
-        JCloudNova novaApi = null;
-        try {
-            keystone = new JCloudKeyStone(new Endpoint(vc));
-            Tenant tenant = keystone.getTenantById(dto.getTenantId());
+        Openstack4jKeystone keystone = new Openstack4jKeystone(new Endpoint(vc));
+        Tenant tenant = keystone.getTenantById(dto.getTenantId());
 
-            if (tenant == null) {
-                throw new VmidcBrokerValidationException("Tenant: '" + dto.getTenantName() + "' does not exist.");
-            }
-
-            novaApi = new JCloudNova(new Endpoint(vc, tenant.getName()));
-
-            return new ArrayList<>(novaApi.listRegions());
-        } finally {
-            if (keystone != null) {
-                keystone.close();
-            }
-            if (novaApi != null) {
-                novaApi.close();
-            }
+        if (tenant == null) {
+            throw new VmidcBrokerValidationException("Tenant: '" + dto.getTenantName() + "' does not exist.");
         }
+
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, tenant.getName()));
+        return new ArrayList<>(novaApi.listRegions());
     }
 
     /**

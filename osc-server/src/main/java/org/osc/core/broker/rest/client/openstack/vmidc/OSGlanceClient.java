@@ -19,7 +19,7 @@ package org.osc.core.broker.rest.client.openstack.vmidc;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.osc.core.broker.rest.client.openstack.jcloud.Endpoint;
+import org.osc.core.broker.rest.client.openstack.openstack4j.Endpoint;
 import org.osc.core.rest.client.RestBaseClient;
 
 public class OSGlanceClient extends RestBaseClient {

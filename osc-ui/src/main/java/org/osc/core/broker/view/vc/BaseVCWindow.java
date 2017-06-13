@@ -16,17 +16,19 @@
  *******************************************************************************/
 package org.osc.core.broker.view.vc;
 
-import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.PasswordField;
+import com.vaadin.ui.TextField;
 import org.apache.log4j.Logger;
-import org.jclouds.http.HttpResponseException;
-import org.jclouds.rest.AuthorizationException;
 import org.osc.core.broker.service.api.plugin.PluginService;
 import org.osc.core.broker.service.api.server.EncryptionApi;
 import org.osc.core.broker.service.api.server.EncryptionException;
@@ -50,18 +52,12 @@ import org.osc.core.broker.window.VmidcWindow;
 import org.osc.core.broker.window.WindowUtil;
 import org.osc.core.broker.window.button.OkCancelButtonModel;
 
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
 
@@ -312,21 +308,12 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
             ErrorType errorType = ((ErrorTypeException) originalException).getType();
             exception = originalException.getCause();
 
-            // TODO this exception leaks large amounts of implementation detail out of
-            // the API (e.g. JClouds internal exceptions. Surely there is a better way
-            // of handling problems?
+            // TODO this exception leaks large amounts of implementation detail out of the API
             if (errorType == ErrorType.PROVIDER_EXCEPTION) {
-                if (exception instanceof AuthorizationException) {
-                    // keystone Invalid Credential Exception
-                    contentText = VmidcMessages.getString(VmidcMessages_.VC_CONFIRM_CREDS, KEYSTONE_CAPTION);
-
-                } else if (exception instanceof HttpResponseException
-                        && exception.getCause() instanceof ConnectException
-                        || (RestClientException.isConnectException(exception) && isOpenstack())) {
+                if (RestClientException.isConnectException(exception) && isOpenstack()) {
                     // Keystone Connect Exception
                     contentText = VmidcMessages.getString(VmidcMessages_.VC_CONFIRM_IP, KEYSTONE_CAPTION);
                 }
-
             } else if (errorType == ErrorType.CONTROLLER_EXCEPTION) {
                 if (RestClientException.isCredentialError(exception)) {
                     if (isOpenstack()) {

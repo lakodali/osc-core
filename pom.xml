@@ -106,15 +106,16 @@
                 <module>osc-server</module>
                 <module>osc-ui</module>
                 <module>osc-ui-widgetset</module>
-                
+
                 <module>osc-uber</module>
                 <module>osc-uber-jcloud</module>
+                <module>osc-uber-openstack4j</module>
                 <module>osc-control</module>
-                
+
                 <module>osc-installer</module>
                 <module>osc-installer-test</module>
                 <module>osc-installer-simple</module>
-                
+
                 <module>osc-resolver</module>
                 <module>osc-export</module>
             </modules>
@@ -141,15 +142,16 @@
                 <module>osc-server</module>
                 <module>osc-ui</module>
                 <module>osc-ui-widgetset</module>
-                
+
+                <module>osc-uber-openstack4j</module>
                 <module>osc-uber</module>
                 <module>osc-uber-jcloud</module>
                 <module>osc-control</module>
-                
+
                 <module>osc-installer</module>
                 <module>osc-installer-test</module>
                 <module>osc-installer-simple</module>
-                
+
                 <module>osc-resolver</module>
                 <module>osc-export</module>
             </modules>

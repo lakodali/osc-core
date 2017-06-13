@@ -34,8 +34,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.osc.core.broker.model.entities.virtualization.VirtualizationConnector;
 import org.osc.core.broker.model.plugin.ApiFactoryService;
+import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone;
 //import org.osc.core.broker.model.plugin.sdncontroller.VMwareSdnConnector;
-import org.osc.core.broker.rest.client.openstack.jcloud.JCloudKeyStone;
 import org.osc.core.broker.rest.client.openstack.vmidc.notification.OsRabbitMQClient;
 import org.osc.core.broker.rest.client.openstack.vmidc.notification.runner.RabbitMQRunner;
 import org.osc.core.broker.service.api.server.EncryptionApi;
@@ -212,10 +212,9 @@ public class VirtualizationConnectorUtilTest {
 		request.addErrorsToIgnore(errorList);
 
 		VirtualizationConnector vc = VirtualizationConnectorEntityMgr.createEntity(request.getDto(), this.encrypter);
-		JCloudKeyStone cloudKeyStone = mock(JCloudKeyStone.class);
+		Openstack4jKeystone cloudKeyStone = mock(Openstack4jKeystone.class);
 		when(cloudKeyStone.listTenants()).thenReturn(null);
 		request.getDto().getProviderAttributes().putIfAbsent(VirtualizationConnector.ATTRIBUTE_KEY_HTTPS, "true");
-		doNothing().when(cloudKeyStone).close();
 		DryRunRequest<VirtualizationConnectorDto> spyRequest = spy(request);
 
 		// Act.

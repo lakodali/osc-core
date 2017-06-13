@@ -196,7 +196,7 @@
 			<artifactId>openstack-neutron</artifactId>
 			<version>${jclouds.version}</version>
 		</dependency>
-		<!--TODO: bsulich exclusion will be deleted when replacing jcloud with openstack4j-->
+		<!--TODO: bsulich exclusion will be deleted when replacing openstack4j with openstack4j-->
 		<dependency>
 			<groupId>org.apache.jclouds</groupId>
 			<artifactId>jclouds-core</artifactId>
@@ -208,10 +208,32 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Enable Logging for jclouds https://jclouds.apache.org/reference/logging/ 
-			<dependency> <groupId>org.apache.jclouds.driver</groupId> <artifactId>jclouds-slf4j</artifactId> 
-			<version>${jclouds.version}</version> </dependency> <dependency> <groupId>ch.qos.logback</groupId> 
-			<artifactId>logback-classic</artifactId> <version>1.0.13</version> </dependency> -->
+		<dependency>
+			<groupId>org.pacesys</groupId>
+			<artifactId>openstack4j</artifactId>
+			<version>3.0.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.pacesys.openstack4j.connectors</groupId>
+					<artifactId>openstack4j-resteasy</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.pacesys.openstack4j.connectors</groupId>
+			<artifactId>openstack4j-jersey2</artifactId>
+			<version>3.0.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- Rabbitmq Client -->
 		<dependency>
