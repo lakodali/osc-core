@@ -16,16 +16,9 @@
  *******************************************************************************/
 package org.osc.core.broker.service.securitygroup;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.openstack4j.model.identity.v2.Tenant;
+import org.openstack4j.model.identity.v3.Project;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroup;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroupMember;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroupMemberType;
@@ -37,8 +30,8 @@ import org.osc.core.broker.model.entities.virtualization.openstack.VM;
 import org.osc.core.broker.model.entities.virtualization.openstack.VMPort;
 import org.osc.core.broker.model.plugin.sdncontroller.ControllerType;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Endpoint;
-import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4JNova;
+import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone;
 import org.osc.core.broker.service.ServiceDispatcher;
 import org.osc.core.broker.service.common.VmidcMessages;
 import org.osc.core.broker.service.common.VmidcMessages_;
@@ -56,6 +49,12 @@ import org.osc.core.broker.service.response.Response;
 import org.osc.core.broker.service.securitygroup.exception.SecurityGroupMemberPartOfAnotherSecurityGroupException;
 import org.osc.core.broker.service.validator.SecurityGroupDtoValidator;
 import org.osc.core.broker.service.validator.SecurityGroupMemberItemDtoValidator;
+
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class BaseSecurityGroupService<I extends Request, O extends Response> extends ServiceDispatcher<I, O> {
 
@@ -85,10 +84,10 @@ public abstract class BaseSecurityGroupService<I extends Request, O extends Resp
         }
 
         Openstack4jKeystone keystone = new Openstack4jKeystone(new Endpoint(vc));
-        Tenant tenant = keystone.getTenantById(dto.getTenantId());
+        Project tenant = keystone.getProjectById(dto.getTenantId());
 
         if (tenant == null) {
-            throw new VmidcBrokerValidationException("Tenant: '" + dto.getTenantName() + "' does not exist.");
+            throw new VmidcBrokerValidationException("Domain: '" + dto.getTenantName() + "' does not exist.");
         }
 
         Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, tenant.getName()));
@@ -119,7 +118,7 @@ public abstract class BaseSecurityGroupService<I extends Request, O extends Resp
             SecurityGroupMemberItemDto securityGroupMemberDto) throws VmidcBrokerValidationException {
         String openstackId = securityGroupMemberDto.getOpenstackId();
         SecurityGroupMemberType type = SecurityGroupMemberType.fromText(securityGroupMemberDto.getType());
-        OsProtectionEntity entity = null;
+        OsProtectionEntity entity;
 
         if (type == SecurityGroupMemberType.VM) {
             entity = VMEntityManager.findByOpenstackId(em, openstackId);

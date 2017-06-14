@@ -119,7 +119,7 @@ public class VirtualizationConnectorUtil {
                             SslContextProvider.getInstance().getSSLContext());
 
                     Openstack4jKeystone keystoneAPi = new Openstack4jKeystone(endPoint);
-                    keystoneAPi.listTenants();
+                    keystoneAPi.listProjects();
                 } catch (Exception exception) {
                     errorTypeException = new ErrorTypeException(exception, ErrorType.PROVIDER_EXCEPTION);
                     LOG.warn(

@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.osc.core.broker.rest.client.openstack.openstack4j;
 
-import org.openstack4j.model.identity.v2.Tenant;
+import org.openstack4j.model.identity.v3.Project;
 
 import java.util.Comparator;
 import java.util.List;
@@ -27,13 +27,13 @@ public class Openstack4jKeystone extends BaseOpenstack4jApi {
         super(endPoint);
     }
 
-    public List<? extends Tenant> listTenants() {
-        List<? extends Tenant> tenantsList = this.getOs().identity().tenants().list();
-        tenantsList.sort(Comparator.comparing(Tenant::getName));
+    public List<? extends Project> listProjects() {
+        List<? extends Project> tenantsList = this.getOs().identity().projects().list();
+        tenantsList.sort(Comparator.comparing(Project::getName));
         return tenantsList;
     }
 
-    public Tenant getTenantById(String tenantId) {
-        return this.getOs().identity().tenants().get(tenantId);
+    public Project getProjectById(String projectId) {
+        return this.getOs().identity().projects().get(projectId);
     }
 }

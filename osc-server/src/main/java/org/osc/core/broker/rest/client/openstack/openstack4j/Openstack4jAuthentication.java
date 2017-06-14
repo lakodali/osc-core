@@ -16,7 +16,7 @@
  *******************************************************************************/
 package org.osc.core.broker.rest.client.openstack.openstack4j;
 
-import org.openstack4j.model.identity.v2.Access;
+import org.openstack4j.model.identity.v3.Token;
 
 public class Openstack4jAuthentication extends BaseOpenstack4jApi {
 
@@ -24,7 +24,7 @@ public class Openstack4jAuthentication extends BaseOpenstack4jApi {
         super(endPoint);
     }
 
-    public Access getTenantAccess() {
-        return this.getOs().getAccess();
+    public Token getTenantToken() {
+        return this.getOs().getToken();
     }
 }

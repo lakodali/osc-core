@@ -31,7 +31,7 @@ public abstract class BaseOpenstack4jApi {
         this.keystoneProvider = KeystoneProvider.getInstance(endPoint);
     }
 
-    public OSClient.OSClientV2 getOs() {
+    public OSClient.OSClientV3 getOs() {
         return this.keystoneProvider.getAvailableSession();
     }
 }

@@ -19,7 +19,7 @@ package org.osc.core.broker.rest.client.openstack.vmidc.api;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.openstack4j.model.identity.v2.Token;
+import org.openstack4j.model.identity.v3.Token;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Endpoint;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jAuthentication;
 import org.osc.core.broker.rest.client.openstack.vmidc.OSNovaClient;
@@ -32,7 +32,7 @@ public class OSNovaRestApi {
 
     public OSNovaRestApi(Endpoint endPoint) throws IOException {
         Openstack4jAuthentication authApi = new Openstack4jAuthentication(endPoint);
-        this.token = authApi.getTenantAccess().getToken();
+        this.token = authApi.getTenantToken();
         this.osNovaClient = new OSNovaClient(endPoint, this.token.getId());
     }
 

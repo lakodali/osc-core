@@ -16,12 +16,8 @@
  *******************************************************************************/
 package org.osc.core.broker.service.tasks.conformance.openstack.securitygroup;
 
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
 import org.apache.log4j.Logger;
-import org.openstack4j.model.identity.v2.Tenant;
+import org.openstack4j.model.identity.v3.Project;
 import org.osc.core.broker.job.lock.LockObjectReference;
 import org.osc.core.broker.model.entities.virtualization.SecurityGroup;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Endpoint;
@@ -29,6 +25,9 @@ import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone
 import org.osc.core.broker.service.persistence.OSCEntityManager;
 import org.osc.core.broker.service.tasks.TransactionalTask;
 import org.osgi.service.component.annotations.Component;
+
+import javax.persistence.EntityManager;
+import java.util.Set;
 
 /**
  * Validates the DS tenant exists and syncs the name if needed
@@ -56,7 +55,7 @@ public class ValidateSecurityGroupTenantTask extends TransactionalTask {
 
         this.log.info("Validating the Security Group tenant " + this.securityGroup.getTenantName() + " exists.");
         Openstack4jKeystone keystone = new Openstack4jKeystone(new Endpoint(this.securityGroup.getVirtualizationConnector()));
-        Tenant tenant = keystone.getTenantById(this.securityGroup.getTenantId());
+        Project tenant = keystone.getProjectById(this.securityGroup.getTenantId());
         if (tenant == null) {
             this.log.info("Security Group tenant " + this.securityGroup.getTenantName() + " Deleted from openstack. Marking Security Group for deletion.");
             // Tenant was deleted, mark Security Group for deleting as well

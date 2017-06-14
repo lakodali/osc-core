@@ -28,6 +28,7 @@ import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.compute.builder.ServerCreateBuilder;
 import org.openstack4j.model.compute.ext.AvailabilityZone;
 import org.openstack4j.model.compute.ext.Hypervisor;
+import org.openstack4j.model.identity.v3.Region;
 import org.openstack4j.model.network.Port;
 import org.osc.core.broker.service.exceptions.VmidcBrokerInvalidRequestException;
 import org.osc.sdk.manager.element.ApplianceBootstrapInformationElement;
@@ -90,8 +91,8 @@ public class Openstack4JNova extends BaseOpenstack4jApi {
 
     public Set<String> listRegions() {
         if (this.regions == null) {
-            List<? extends org.openstack4j.model.identity.v2.Endpoint> endpoints = getOs().identity().listTokenEndpoints();
-            this.regions = endpoints.stream().map(org.openstack4j.model.identity.v2.Endpoint::getRegion).collect(Collectors.toSet()); // :TODO ADD DISTINCT
+            List<? extends Region> endpoints = getOs().identity().regions().list();
+            this.regions = endpoints.stream().map(Region::getId).collect(Collectors.toSet());
         }
         return this.regions;
     }

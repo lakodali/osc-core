@@ -124,7 +124,7 @@ public class VirtualizationConnectorDtoValidator
         ValidateUtil.checkForNullFields(notNullFieldsMap);
 
         if (dto.getType().isOpenstack()) {
-            notNullFieldsMap.put("Admin Tenant Name", dto.getAdminTenantName());
+            notNullFieldsMap.put("Admin Domain Name", dto.getAdminTenantName());
             if (!dto.isControllerDefined()) {
                 nullFieldsMap.put("Controller IP Address", dto.getControllerIP());
                 nullFieldsMap.put("Controller User Name", dto.getControllerUser());
@@ -167,7 +167,7 @@ public class VirtualizationConnectorDtoValidator
 
     public static void checkFieldLength(VirtualizationConnectorDto dto) throws Exception {
 
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         map.put("Name", dto.getName());
 
@@ -177,7 +177,7 @@ public class VirtualizationConnectorDtoValidator
         map.put("Provider User Name", dto.getProviderUser());
         map.put("Provider Password", dto.getProviderPassword());
         if (dto.getType().isOpenstack()) {
-            map.put("Admin Tenant Name", dto.getAdminTenantName());
+            map.put("Admin Domain Name", dto.getAdminTenantName());
             String rabbitMqPort = dto.getProviderAttributes().get(VirtualizationConnector.ATTRIBUTE_KEY_RABBITMQ_PORT);
             if (!StringUtils.isNumeric(rabbitMqPort)) {
                 throw new VmidcBrokerInvalidEntryException(VirtualizationConnector.ATTRIBUTE_KEY_RABBITMQ_PORT

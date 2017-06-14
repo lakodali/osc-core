@@ -45,7 +45,7 @@ public class ListTenantByVcIdService extends ServiceDispatcher<BaseIdRequest, Li
         // to do mapping
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId());
         Openstack4jKeystone keystoneApi = new Openstack4jKeystone(new Endpoint(vc));
-        response.setList(keystoneApi.listTenants().stream()
+        response.setList(keystoneApi.listProjects().stream()
                 .map(tenant -> new OsTenantDto(tenant.getName(), tenant.getId())).collect(Collectors.toList()));
         return response;
     }

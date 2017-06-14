@@ -16,12 +16,8 @@
  *******************************************************************************/
 package org.osc.core.broker.service.tasks.conformance.openstack.deploymentspec;
 
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
 import org.apache.log4j.Logger;
-import org.openstack4j.model.identity.v2.Tenant;
+import org.openstack4j.model.identity.v3.Project;
 import org.osc.core.broker.job.lock.LockObjectReference;
 import org.osc.core.broker.model.entities.virtualization.VirtualizationConnector;
 import org.osc.core.broker.model.entities.virtualization.openstack.DeploymentSpec;
@@ -30,6 +26,9 @@ import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone
 import org.osc.core.broker.service.persistence.OSCEntityManager;
 import org.osc.core.broker.service.tasks.TransactionalTask;
 import org.osgi.service.component.annotations.Component;
+
+import javax.persistence.EntityManager;
+import java.util.Set;
 
 /**
  * Validates the DS tenant exists and syncs the name if needed
@@ -60,7 +59,7 @@ public class ValidateDSTenantTask extends TransactionalTask {
             this.log.info("Validating the DS tenant " + this.ds.getTenantName() + " exists.");
 
             Openstack4jKeystone keystone = new Openstack4jKeystone(new Endpoint(vc));
-            Tenant tenant = keystone.getTenantById(this.ds.getTenantId());
+            Project tenant = keystone.getProjectById(this.ds.getTenantId());
             if (tenant == null) {
                 this.log.info("DS tenant " + this.ds.getTenantName() + " Deleted from openstack. Marking DS for deletion.");
                 // Tenant was deleted, mark ds for deleting as well

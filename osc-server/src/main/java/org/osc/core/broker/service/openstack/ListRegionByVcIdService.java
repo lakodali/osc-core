@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.osc.core.broker.service.openstack;
 
+import org.openstack4j.model.identity.v3.Region;
 import org.osc.core.broker.model.entities.virtualization.VirtualizationConnector;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Endpoint;
 import org.osc.core.broker.rest.client.openstack.openstack4j.Openstack4jKeystone;
@@ -36,15 +37,12 @@ public class ListRegionByVcIdService extends ServiceDispatcher<BaseOpenStackRequ
 
     @Override
     public ListResponse<String> exec(BaseOpenStackRequest request, EntityManager em) throws Exception {
-
         OSCEntityManager<VirtualizationConnector> emgr = new OSCEntityManager<>(VirtualizationConnector.class, em, this.txBroadcastUtil);
-
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId());
 
         Openstack4jKeystone keystone = new Openstack4jKeystone(new Endpoint(vc, request.getTenantName()));
-        List<? extends org.openstack4j.model.identity.v2.Endpoint> endpoints = keystone.getOs().identity().listTokenEndpoints();
-        List<String> regions = endpoints.stream().map(org.openstack4j.model.identity.v2.Endpoint::getRegion).collect(Collectors.toList()); // :TODO ADD DISTINCT
+        List<? extends Region> endpoints = keystone.getOs().identity().regions().list();
+        List<String> regions = endpoints.stream().map(Region::getId).collect(Collectors.toList());
         return new ListResponse<>(regions);
     }
-
 }

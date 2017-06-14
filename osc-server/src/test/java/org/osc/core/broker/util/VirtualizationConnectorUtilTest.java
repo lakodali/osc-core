@@ -213,7 +213,7 @@ public class VirtualizationConnectorUtilTest {
 
 		VirtualizationConnector vc = VirtualizationConnectorEntityMgr.createEntity(request.getDto(), this.encrypter);
 		Openstack4jKeystone cloudKeyStone = mock(Openstack4jKeystone.class);
-		when(cloudKeyStone.listTenants()).thenReturn(null);
+		when(cloudKeyStone.listProjects()).thenReturn(null);
 		request.getDto().getProviderAttributes().putIfAbsent(VirtualizationConnector.ATTRIBUTE_KEY_HTTPS, "true");
 		DryRunRequest<VirtualizationConnectorDto> spyRequest = spy(request);
 
@@ -223,7 +223,7 @@ public class VirtualizationConnectorUtilTest {
 		// Assert
 		verify(spyRequest, times(1)).isIgnoreErrorsAndCommit(ErrorType.CONTROLLER_EXCEPTION);
 		verify(spyRequest, times(1)).isIgnoreErrorsAndCommit(ErrorType.RABBITMQ_EXCEPTION);
-		verify(cloudKeyStone, times(1)).listTenants();
+		verify(cloudKeyStone, times(1)).listProjects();
 	}
 
 	@Test

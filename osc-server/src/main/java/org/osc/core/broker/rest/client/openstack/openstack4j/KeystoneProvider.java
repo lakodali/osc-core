@@ -20,7 +20,8 @@ import org.openstack4j.api.OSClient;
 import org.openstack4j.api.client.IOSClientBuilder;
 import org.openstack4j.api.types.Facing;
 import org.openstack4j.core.transport.Config;
-import org.openstack4j.model.identity.v2.Access;
+import org.openstack4j.model.common.Identifier;
+import org.openstack4j.model.identity.v3.Token;
 import org.openstack4j.openstack.OSFactory;
 
 import java.net.MalformedURLException;
@@ -30,7 +31,7 @@ import java.net.URISyntaxException;
 public class KeystoneProvider {
 
     private static KeystoneProvider instance = null;
-    private OSClient.OSClientV2 os;
+    private OSClient.OSClientV3 os;
     private Endpoint endPoint;
 
     protected KeystoneProvider() {
@@ -46,8 +47,8 @@ public class KeystoneProvider {
         return instance;
     }
 
-    OSClient.OSClientV2 getAvailableSession(){
-        OSClient.OSClientV2 localOs;
+    OSClient.OSClientV3 getAvailableSession(){
+        OSClient.OSClientV3 localOs;
         Config config = Config.newConfig().withSSLContext(this.endPoint.getSslContext()).withHostnameVerifier((hostname, session) -> true);
         if(this.os == null){
             String endpointURL;
@@ -60,16 +61,18 @@ public class KeystoneProvider {
             // LOGGER
             OSFactory.enableHttpLoggingFilter(true);
 
-            IOSClientBuilder.V2 keystoneV2Builder = OSFactory.builderV2().perspective(Facing.ADMIN)
+            Identifier domainIdentifier = Identifier.byName(this.endPoint.getTenant()); //TODO default domain: Default
+
+            IOSClientBuilder.V3 keystoneV3Builder = OSFactory.builderV3().perspective(Facing.ADMIN)
                     .endpoint(endpointURL)
-                    .credentials(this.endPoint.getUser(), this.endPoint.getPassword())
-                    .tenantName(this.endPoint.getTenant())
+                    .credentials(this.endPoint.getUser(), this.endPoint.getPassword(), domainIdentifier)
+                    .scopeToProject(Identifier.byName(this.endPoint.getUser()), domainIdentifier) // default project admin: todo add field to ui
                     .withConfig(config);
 
-            localOs = keystoneV2Builder.authenticate();
+            localOs = keystoneV3Builder.authenticate();
         } else {
-            Access access = this.os.getAccess();
-            localOs = OSFactory.clientFromAccess(access, Facing.ADMIN, config);
+            Token token = this.os.getToken();
+            localOs = OSFactory.clientFromToken(token, Facing.ADMIN, config);
         }
 
         this.os = localOs;
@@ -78,7 +81,7 @@ public class KeystoneProvider {
 
     private String prepareEndpointURL(Endpoint endPoint) throws URISyntaxException, MalformedURLException {
         String schema = endPoint.isHttps() ? "https" : "http";
-        URI uri = new URI(schema, null, endPoint.getEndPointIP(), 5000, "/v2.0", null, null);
+        URI uri = new URI(schema, null, endPoint.getEndPointIP(), 5000, "/v3", null, null);
         return uri.toURL().toString();
     }
 
