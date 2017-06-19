@@ -29,14 +29,16 @@ import org.osc.core.rest.client.crypto.SslContextProvider;
 public class Endpoint {
 
     private String endPointIP;
+    private String domain;
     private String tenant;
     private String user;
     private String password;
     private boolean isHttps;
     private SSLContext sslContext;
 
-    public Endpoint(String endPointIP, String tenant, String user, String password, boolean isHttps, SSLContext sslContext) {
+    public Endpoint(String endPointIP, String domain, String tenant, String user, String password, boolean isHttps, SSLContext sslContext) {
         this.endPointIP = endPointIP;
+        this.domain = domain;
         this.tenant = tenant;
         this.user = user;
         this.password = password;
@@ -46,6 +48,7 @@ public class Endpoint {
 
     public Endpoint(VirtualizationConnector vc) throws EncryptionException {
         this.endPointIP = vc.getProviderIpAddress();
+        this.domain = vc.getAdminDomainName();
         this.tenant = vc.getProviderAdminTenantName();
         this.user = vc.getProviderUsername();
         this.password = StaticRegistry.encryptionApi().decryptAESCTR(vc.getProviderPassword());
@@ -54,12 +57,13 @@ public class Endpoint {
     }
 
     public Endpoint(DeploymentSpec ds) throws EncryptionException {
-        this(ds.getVirtualSystem().getVirtualizationConnector(), ds.getTenantName());
+        this(ds.getVirtualSystem().getVirtualizationConnector(), ds.getTenantName(), "Default"); //:TODO fix missing domain
     }
 
-    public Endpoint(VirtualizationConnector vc, String tenant) throws EncryptionException {
+    public Endpoint(VirtualizationConnector vc, String tenant, String domain) throws EncryptionException {
         this.endPointIP = vc.getProviderIpAddress();
         this.tenant = tenant;
+        this.domain = domain;
         this.user = vc.getProviderUsername();
         this.password = StaticRegistry.encryptionApi().decryptAESCTR(vc.getProviderPassword());
         this.isHttps = vc.isProviderHttps();
@@ -97,6 +101,14 @@ public class Endpoint {
         this.password = password;
     }
 
+    public String getDomain() {
+        return this.domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
     public boolean isHttps() {
         return this.isHttps;
     }
@@ -121,9 +133,11 @@ public class Endpoint {
 
         return new EqualsBuilder()
                 .append(getEndPointIP(), other.getEndPointIP())
+                .append(getDomain(), other.getDomain())
                 .append(getTenant(), other.getTenant())
                 .append(getUser(), other.getUser())
                 .append(getPassword(), other.getPassword())
+                .append(isHttps(), other.isHttps())
                 .isEquals();
     }
 
@@ -131,9 +145,11 @@ public class Endpoint {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(getEndPointIP())
+                .append(getDomain())
                 .append(getTenant())
                 .append(getUser())
                 .append(getPassword())
+                .append(isHttps())
                 .toHashCode();
     }
 }

@@ -39,7 +39,7 @@ public class ListFloatingIpPoolsService extends ServiceDispatcher<BaseOpenStackR
         OSCEntityManager<VirtualSystem> emgr = new OSCEntityManager<>(VirtualSystem.class, em, this.txBroadcastUtil);
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
 
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
         List<String> osFloatingIpPoolsList = novaApi.getFloatingIpPools(request.getRegion());
         return new ListResponse<>(osFloatingIpPoolsList);
     }

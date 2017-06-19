@@ -53,6 +53,9 @@ public class DeploymentSpec extends BaseEntity implements LastJobContainer {
     @Column(name = "tenant_name", nullable = false)
     private String tenantName;
 
+    @Column(name = "domain_name", nullable = false)
+    private String domainName;
+
     @Column(name = "tenant_id", nullable = false)
     private String tenantId;
 
@@ -171,6 +174,14 @@ public class DeploymentSpec extends BaseEntity implements LastJobContainer {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
+    }
+
+    public String getDomainName() {
+        return this.domainName;
+    }
+
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
     }
 
     public String getManagementNetworkName() {

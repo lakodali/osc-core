@@ -171,6 +171,7 @@ public final class CheckPortGroupHookMetaTask extends TransactionalMetaTask {
         String sgmDomainId = OpenstackUtil.extractDomainId(
                 sgm.getSecurityGroup().getTenantId(),
                 sgm.getSecurityGroup().getVirtualizationConnector().getProviderAdminTenantName(),
+                sgm.getSecurityGroup().getVirtualizationConnector().getAdminDomainName(),
                 sgm.getSecurityGroup().getVirtualizationConnector(),
                 OpenstackUtil.getPorts(sgm));
 

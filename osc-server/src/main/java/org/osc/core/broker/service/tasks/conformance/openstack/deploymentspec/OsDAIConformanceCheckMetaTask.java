@@ -44,7 +44,6 @@ import org.osc.sdk.controller.DefaultInspectionPort;
 import org.osc.sdk.controller.DefaultNetworkPort;
 import org.osc.sdk.controller.api.SdnRedirectionApi;
 import org.osc.sdk.controller.element.InspectionPortElement;
-import org.osc.sdk.controller.element.NetworkElement;
 import org.osc.sdk.controller.exception.NetworkPortNotFoundException;
 import org.osgi.service.component.ComponentServiceObjects;
 import org.osgi.service.component.annotations.Component;
@@ -155,7 +154,7 @@ public class OsDAIConformanceCheckMetaTask extends TransactionalMetaTask {
         log.info("Checking DAI: " + this.dai.getName());
 
         VirtualizationConnector vc = ds.getVirtualSystem().getVirtualizationConnector();
-        Endpoint endPoint = new Endpoint(vc, ds.getTenantName());
+        Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainName());
         Openstack4JNova nova = new Openstack4JNova(endPoint);
 
         Server sva = null;
@@ -230,9 +229,8 @@ public class OsDAIConformanceCheckMetaTask extends TransactionalMetaTask {
             InspectionPortElement inspectionPort = null;
             if (this.apiFactoryService.supportsPortGroup(this.dai.getVirtualSystem())) {
                 DeploymentSpec ds = this.dai.getDeploymentSpec();
-                String domainId = OpenstackUtil.extractDomainId(ds.getTenantId(), ds.getTenantName(),
-                        ds.getVirtualSystem().getVirtualizationConnector(),
-                        new ArrayList<NetworkElement>(Arrays.asList(ingressPort)));
+                String domainId = OpenstackUtil.extractDomainId(ds.getTenantId(), ds.getTenantName(), ds.getDomainName(),
+                        ds.getVirtualSystem().getVirtualizationConnector(), new ArrayList<>(Arrays.asList(ingressPort)));
                 if (domainId != null) {
                     ingressPort.setParentId(domainId);
                     egressPort.setParentId(domainId);

@@ -81,12 +81,12 @@ public class OpenstackUtil {
      * @return
      * @throws IOException
      */
-    public static String extractDomainId(String tenantId, String tenantName, VirtualizationConnector vc,
+    public static String extractDomainId(String tenantId, String tenantName, String domainName, VirtualizationConnector vc,
             List<NetworkElement> protectedPorts) throws IOException, EncryptionException {
         String domainId = null;
         Port port;
-        Openstack4JNeutron neutron = new Openstack4JNeutron(new Endpoint(vc, tenantName));
-        Openstack4JNova nova = new Openstack4JNova(new Endpoint(vc, tenantName));
+        Openstack4JNeutron neutron = new Openstack4JNeutron(new Endpoint(vc, tenantName, domainName));
+        Openstack4JNova nova = new Openstack4JNova(new Endpoint(vc, tenantName, domainName));
         Set<String> regions = nova.listRegions();
 
         outerloop:
@@ -122,10 +122,10 @@ public class OpenstackUtil {
      * Waits until the VM state becomes active. If the VM enters a terminal state, throws a VmidcException
      *
      */
-    public static void ensureVmActive(VirtualizationConnector vc, String tenant, String region, String vmId)
+    public static void ensureVmActive(VirtualizationConnector vc, String domain, String tenant, String region, String vmId)
             throws Exception {
 
-        Openstack4JNova nova = new Openstack4JNova(new Endpoint(vc, tenant));
+        Openstack4JNova nova = new Openstack4JNova(new Endpoint(vc, tenant, domain));
         Server server = null;
         int i = MAX_DISCOVERY_RETRIES;
         while (i > 0) {
@@ -345,6 +345,7 @@ public class OpenstackUtil {
         return OpenstackUtil.extractDomainId(
                 dai.getDeploymentSpec().getTenantId(),
                 tenantId,
+                vc.getAdminDomainName(),
                 vc,
                 Arrays.asList(ingressPort));
     }
@@ -467,7 +468,7 @@ public class OpenstackUtil {
     public static void discoverVmForPort(EntityManager em, String region, SecurityGroup sg, Port osPort, VMPort vmPort)
             throws IOException, EncryptionException {
 
-        Openstack4JNova nova = new Openstack4JNova(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName()));
+        Openstack4JNova nova = new Openstack4JNova(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainName()));
         Server osVm = nova.getServer(region, osPort.getDeviceId());
         if (null == osVm) {
             OSCEntityManager.delete(em, vmPort, StaticRegistry.transactionalBroadcastUtil());

@@ -71,13 +71,14 @@ public class UpdateVirtualizationConnectorWindow extends BaseVCWindow {
             this.controllerIP.setValue(vcObject.getControllerIP());
             this.controllerUser.setValue(vcObject.getControllerUser());
             this.controllerPW.setValue(vcObject.getControllerPassword());
-            this.controllerType.setValue(vcObject.getControllerType().toString());
+            this.controllerType.setValue(vcObject.getControllerType());
         } else {
             this.controllerType.setValue(NO_CONTROLLER);
             this.controllerType.setEnabled(true);
         }
 
         this.providerIP.setValue(vcObject.getProviderIP());
+        this.adminDomainName.setValue(vcObject.getAdminDomainName());
         this.adminTenantName.setValue(vcObject.getAdminTenantName());
         this.providerUser.setValue(vcObject.getProviderUser());
         this.providerPW.setValue(vcObject.getProviderPassword());

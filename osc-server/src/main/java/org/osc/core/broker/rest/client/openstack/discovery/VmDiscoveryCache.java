@@ -95,10 +95,10 @@ public class VmDiscoveryCache {
 
     private Openstack4JNova jcNovaApi;
 
-    public VmDiscoveryCache(VirtualizationConnector vc, String tenant) throws IOException, EncryptionException {
+    public VmDiscoveryCache(VirtualizationConnector vc, String tenant, String domain) throws IOException, EncryptionException {
         this.vc = vc;
         this.tenant = tenant;
-        this.jcNovaApi = new Openstack4JNova(new Endpoint(vc, tenant));
+        this.jcNovaApi = new Openstack4JNova(new Endpoint(vc, tenant, domain));
     }
 
     public VmInfo discover(String region, String vmId) throws Exception {

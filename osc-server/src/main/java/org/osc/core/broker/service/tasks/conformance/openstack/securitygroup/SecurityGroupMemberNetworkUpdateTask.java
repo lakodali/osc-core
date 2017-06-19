@@ -78,7 +78,8 @@ public class SecurityGroupMemberNetworkUpdateTask extends TransactionalMetaTask 
 
         SecurityGroup sg = this.sgm.getSecurityGroup();
 
-        Openstack4JNeutron neutron = new Openstack4JNeutron(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName()));
+        Openstack4JNeutron neutron = new Openstack4JNeutron(new Endpoint(sg.getVirtualizationConnector(),
+                sg.getTenantName(), sg.getDomainName()));
 
         List<Port> osPorts = neutron.listComputePortsByNetwork(network.getRegion(), sg.getTenantId(),
                 network.getOpenstackId());

@@ -84,13 +84,13 @@ public abstract class BaseSecurityGroupService<I extends Request, O extends Resp
         }
 
         Openstack4jKeystone keystone = new Openstack4jKeystone(new Endpoint(vc));
-        Project tenant = keystone.getProjectById(dto.getTenantId());
+        Project project = keystone.getProjectById(dto.getTenantId());
 
-        if (tenant == null) {
-            throw new VmidcBrokerValidationException("Domain: '" + dto.getTenantName() + "' does not exist.");
+        if (project == null) {
+            throw new VmidcBrokerValidationException("Project: '" + dto.getTenantName() + "' does not exist.");
         }
 
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, tenant.getName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, project.getName(), vc.getAdminDomainName()));
         return new ArrayList<>(novaApi.listRegions());
     }
 

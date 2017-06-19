@@ -31,7 +31,7 @@ import java.net.URISyntaxException;
 public class KeystoneProvider {
 
     private static KeystoneProvider instance = null;
-    private OSClient.OSClientV3 os;
+    private static OSClient.OSClientV3 os;
     private Endpoint endPoint;
 
     protected KeystoneProvider() {
@@ -41,7 +41,7 @@ public class KeystoneProvider {
         this.endPoint = endPoint;
     }
     public static KeystoneProvider getInstance(Endpoint endPoint) {
-        if(instance == null) {
+        if(instance == null || !instance.endPoint.equals(endPoint)) {
             instance = new KeystoneProvider(endPoint);
         }
         return instance;
@@ -50,7 +50,7 @@ public class KeystoneProvider {
     OSClient.OSClientV3 getAvailableSession(){
         OSClient.OSClientV3 localOs;
         Config config = Config.newConfig().withSSLContext(this.endPoint.getSslContext()).withHostnameVerifier((hostname, session) -> true);
-        if(this.os == null){
+        if(os == null){
             String endpointURL;
             try {
                 endpointURL = prepareEndpointURL(this.endPoint);
@@ -61,21 +61,21 @@ public class KeystoneProvider {
             // LOGGER
             OSFactory.enableHttpLoggingFilter(true);
 
-            Identifier domainIdentifier = Identifier.byName(this.endPoint.getTenant()); //TODO default domain: Default
+            Identifier domainIdentifier = Identifier.byName(this.endPoint.getDomain());
 
             IOSClientBuilder.V3 keystoneV3Builder = OSFactory.builderV3().perspective(Facing.ADMIN)
                     .endpoint(endpointURL)
                     .credentials(this.endPoint.getUser(), this.endPoint.getPassword(), domainIdentifier)
-                    .scopeToProject(Identifier.byName(this.endPoint.getUser()), domainIdentifier) // default project admin: todo add field to ui
+                    .scopeToProject(Identifier.byName(this.endPoint.getTenant()), domainIdentifier)
                     .withConfig(config);
 
             localOs = keystoneV3Builder.authenticate();
         } else {
-            Token token = this.os.getToken();
+            Token token = os.getToken();
             localOs = OSFactory.clientFromToken(token, Facing.ADMIN, config);
         }
 
-        this.os = localOs;
+        os = localOs;
         return localOs;
     }
 

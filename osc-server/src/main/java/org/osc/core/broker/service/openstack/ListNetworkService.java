@@ -47,7 +47,7 @@ public class ListNetworkService extends ServiceDispatcher<BaseOpenStackRequest, 
         // to do mapping
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
 
-        Openstack4JNeutron neutronApi = new Openstack4JNeutron(new Endpoint(vc, request.getTenantName()));
+        Openstack4JNeutron neutronApi = new Openstack4JNeutron(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
         List<OsNetworkDto> networkList = new ArrayList<>();
         for (Network network : neutronApi.listNetworkByTenant(request.getRegion(), request.getTenantId())) {
             networkList.add(new OsNetworkDto(network.getName(), network.getId()));

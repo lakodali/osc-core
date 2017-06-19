@@ -110,6 +110,7 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
 
     // Provider input fields
     protected TextField providerIP = null;
+    protected TextField adminDomainName = null;
     protected TextField adminTenantName = null;
     protected TextField providerUser = null;
     protected PasswordField providerPW = null;
@@ -156,6 +157,9 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
 
             this.providerIP.validate();
             this.validator.checkValidIpAddress(this.providerIP.getValue());
+            if (this.adminDomainName.isVisible()) {
+                this.adminDomainName.validate();
+            }
             if (this.adminTenantName.isVisible()) {
                 this.adminTenantName.validate();
             }
@@ -220,7 +224,9 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
 
         this.providerIP = new TextField("IP");
         this.providerIP.setImmediate(true);
-        this.adminTenantName = new TextField("Admin Domain Name");
+        this.adminDomainName = new TextField("Admin Domain Name");
+        this.adminDomainName.setImmediate(true);
+        this.adminTenantName = new TextField("Admin Project Name");
         this.adminTenantName.setImmediate(true);
         this.providerUser = new TextField("User Name");
         this.providerUser.setImmediate(true);
@@ -228,8 +234,10 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
         this.providerPW.setImmediate(true);
 
         // adding not null constraint
+        this.adminDomainName.setRequired(true);
+        this.adminDomainName.setRequiredError(this.providerPanel.getCaption() + " Admin Domain Name cannot be empty");
         this.adminTenantName.setRequired(true);
-        this.adminTenantName.setRequiredError(this.providerPanel.getCaption() + " Admin Domain Name cannot be empty");
+        this.adminTenantName.setRequiredError(this.providerPanel.getCaption() + " Admin Project Name cannot be empty");
         this.providerIP.setRequired(true);
         this.providerIP.setRequiredError(this.providerPanel.getCaption() + " IP cannot be empty");
         this.providerUser.setRequired(true);
@@ -239,6 +247,7 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
 
         FormLayout providerFormPanel = new FormLayout();
         providerFormPanel.addComponent(this.providerIP);
+        providerFormPanel.addComponent(this.adminDomainName);
         providerFormPanel.addComponent(this.adminTenantName);
         providerFormPanel.addComponent(this.providerUser);
         providerFormPanel.addComponent(this.providerPW);
@@ -433,10 +442,15 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
         dto.setProviderPassword(this.providerPW.getValue().trim());
         dto.setSslCertificateAttrSet(this.sslCertificateAttrs);
 
+        String domainName = this.adminDomainName.getValue();
+        if (domainName != null) {
+            dto.setAdminDomainName(domainName.trim());
+        }
         String tenantName = this.adminTenantName.getValue();
         if (tenantName != null) {
             dto.setAdminTenantName(tenantName.trim());
         }
+
         if (virtualizationTypeValue.equals(VirtualizationType.OPENSTACK)) {
             dto.setProviderAttributes(this.providerAttributes);
         }
@@ -472,6 +486,7 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
             this.controllerType.setVisible(true);
             this.controllerType.setValue(NO_CONTROLLER);
             updateControllerFields(NO_CONTROLLER);
+            this.adminDomainName.setVisible(true);
             this.adminTenantName.setVisible(true);
             this.advancedSettings.setVisible(true);
             this.advancedSettings.setCaption(SHOW_ADVANCED_SETTINGS_CAPTION);
@@ -486,7 +501,8 @@ public abstract class BaseVCWindow extends CRUDBaseWindow<OkCancelButtonModel> {
         this.providerIP.setRequiredError(this.providerPanel.getCaption() + " IP cannot be empty");
         this.providerUser.setRequiredError(this.providerPanel.getCaption() + " User Name cannot be empty");
         this.providerPW.setRequiredError(this.providerPanel.getCaption() + " Password cannot be empty");
-        this.adminTenantName.setRequiredError(this.providerPanel.getCaption() + " Admin Domain Name cannot be empty");
+        this.adminDomainName.setRequiredError(this.providerPanel.getCaption() + " Admin Domain Name cannot be empty");
+        this.adminTenantName.setRequiredError(this.providerPanel.getCaption() + " Admin Project Name cannot be empty");
     }
 
     private void updateControllerFields(String type) {

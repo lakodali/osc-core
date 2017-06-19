@@ -55,6 +55,9 @@ public class SecurityGroup extends BaseEntity implements LastJobContainer{
     @Column(name = "tenant_id")
     private String tenantId;
 
+    @Column(name = "domain_name")
+    private String domainName;
+
     @Column(name = "tenant_name")
     private String tenantName;
 
@@ -126,6 +129,14 @@ public class SecurityGroup extends BaseEntity implements LastJobContainer{
         this.tenantName = tenantName;
     }
 
+    public String getDomainName() {
+        return this.domainName;
+    }
+
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
+    }
+
     public Set<SecurityGroupMember> getSecurityGroupMembers() {
         return this.securityGroupMembers;
     }
@@ -195,7 +206,7 @@ public class SecurityGroup extends BaseEntity implements LastJobContainer{
     @Override
     public String toString() {
         return "SecurityGroup [name=" + this.name + ", virtualizationConnector=" + this.virtualizationConnector + ", tenantId="
-                + this.tenantId + ", tenantName=" + this.tenantName + ", protectAll=" + this.protectAll
+                + this.tenantId + ", tenantName=" + this.tenantName+ ", domainName=" + this.domainName + ", protectAll=" + this.protectAll
                 + ", mgrId=" + this.mgrId + ", lastJob=" + this.lastJob + ", securityGroupMembers=" + this.securityGroupMembers
                 + ", securityGroupInterfaces=" + this.securityGroupInterfaces + ", networkElementId="
                         + this.networkElementId + "]";

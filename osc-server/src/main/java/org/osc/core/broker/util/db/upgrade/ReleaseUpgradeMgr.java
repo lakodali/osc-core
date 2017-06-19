@@ -237,6 +237,8 @@ public class ReleaseUpgradeMgr {
                 upgrade78to79(stmt);
             case 79:
                 upgrade79to80(stmt);
+            case 80:
+                upgrade80to81(stmt);
             case TARGET_DB_VERSION:
                 if (curDbVer < TARGET_DB_VERSION) {
                     execSql(stmt, "UPDATE RELEASE_INFO SET db_version = " + TARGET_DB_VERSION + " WHERE id = 1;");
@@ -246,6 +248,21 @@ public class ReleaseUpgradeMgr {
             default:
                 log.error("Current DB version is unknown !!!");
         }
+    }
+
+    private static void upgrade80to81(Statement stmt) throws SQLException {
+        // @formatter:off
+
+        execSql(stmt, "alter table VIRTUALIZATION_CONNECTOR "
+                + "add column admin_domain_name varchar(255);");
+
+        execSql(stmt, "alter table SECURITY_GROUP "
+                + "add column domain_name varchar(255);");
+
+        execSql(stmt, "alter table DEPLOYMENT_SPEC "
+                + "add column domain_name varchar(255);");
+
+        // @formatter:on
     }
 
     private static void upgrade79to80(Statement stmt) throws SQLException {

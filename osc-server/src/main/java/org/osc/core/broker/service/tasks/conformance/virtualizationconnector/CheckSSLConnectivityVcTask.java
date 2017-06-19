@@ -99,6 +99,7 @@ public class CheckSSLConnectivityVcTask extends TransactionalTask {
                 .map(SslCertificateAttrEntityMgr::fromEntity)
                 .collect(toSet()));
         dto.setAdminTenantName(vc.getProviderAdminTenantName());
+        dto.setAdminDomainName(vc.getAdminDomainName());
         return request;
     }
 }

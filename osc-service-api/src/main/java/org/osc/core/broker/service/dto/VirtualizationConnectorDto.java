@@ -73,6 +73,9 @@ public class VirtualizationConnectorDto extends BaseDto {
     @ApiModelProperty(value = "Required if Provider is openstack")
     private String adminTenantName;
 
+    @ApiModelProperty(value = "Required if Provider is openstack")
+    private String adminDomainName;
+
     @ApiModelProperty(hidden = true)
     private Set<SslCertificateAttrDto> sslCertificateAttrSet = new HashSet<>();
 
@@ -216,6 +219,14 @@ public class VirtualizationConnectorDto extends BaseDto {
 
     public void setAdminTenantName(String adminTenantName) {
         this.adminTenantName = adminTenantName;
+    }
+
+    public String getAdminDomainName() {
+        return adminDomainName;
+    }
+
+    public void setAdminDomainName(String adminDomainName) {
+        this.adminDomainName = adminDomainName;
     }
 
     @ApiModelProperty(hidden = true)

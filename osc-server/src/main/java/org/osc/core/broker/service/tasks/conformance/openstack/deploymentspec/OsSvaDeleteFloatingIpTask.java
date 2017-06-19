@@ -57,7 +57,7 @@ public class OsSvaDeleteFloatingIpTask extends TransactionalTask {
         DeploymentSpec ds = this.dai.getDeploymentSpec();
         VirtualizationConnector vc = ds.getVirtualSystem().getVirtualizationConnector();
 
-        Endpoint endPoint = new Endpoint(vc, ds.getTenantName());
+        Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainName());
         Openstack4JNova nova = new Openstack4JNova(endPoint);
         nova.deleteFloatingIp(ds.getRegion(), this.dai.getIpAddress(), this.dai.getOsServerId());
 
