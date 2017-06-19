@@ -308,7 +308,7 @@ public class OpenstackUtil {
             VirtualizationConnector vc,
             String tenantId,
             String domainId) throws Exception  {
-        if (StringUtils.isBlank(domainId)) {
+        if (domainId == null || domainId.isEmpty()) {
             // No domain identifier provided, nothing to filter.
             return dais;
         }
@@ -328,7 +328,7 @@ public class OpenstackUtil {
     }
 
     private static Collection<DistributedApplianceInstance> filterDAIsByHost(Collection<DistributedApplianceInstance> dais, String host) {
-        if (StringUtils.isBlank(host)) {
+        if (host == null || host.isEmpty()) {
             return dais;
         }
 

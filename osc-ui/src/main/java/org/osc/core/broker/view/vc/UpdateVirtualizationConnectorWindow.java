@@ -28,6 +28,7 @@ import org.osc.core.broker.service.request.VirtualizationConnectorRequest;
 import org.osc.core.broker.service.response.BaseJobResponse;
 import org.osc.core.broker.service.ssl.X509TrustManagerApi;
 import org.osc.core.broker.view.util.ViewUtil;
+import org.osc.core.common.controller.ControllerType;
 
 public class UpdateVirtualizationConnectorWindow extends BaseVCWindow {
 
@@ -73,7 +74,7 @@ public class UpdateVirtualizationConnectorWindow extends BaseVCWindow {
             this.controllerPW.setValue(vcObject.getControllerPassword());
             this.controllerType.setValue(vcObject.getControllerType());
         } else {
-            this.controllerType.setValue(NO_CONTROLLER);
+            this.controllerType.setValue(ControllerType.NONE);
             this.controllerType.setEnabled(true);
         }
 

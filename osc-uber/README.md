@@ -1,6 +1,7 @@
-# Project org.osc.uber
+# OSC Uber
 
-This project creates an "uber" OSGi bundle containing all the server code and its dependencies.
-It is the first step towards running in an OSGi environment.
+This project creates an "uber" OSGi bundle containing non-OSGi compliant dependencies.
+   > Note: OSGi compliant dependencies should not be added here.
 
-Over time we aim to split this bundle into smaller bundles and to load dependencies as OSGi bundles.
+### Dependencies
+This project is not expected to have direct dependencies to other **osc-core** projects.

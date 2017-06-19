@@ -49,6 +49,7 @@ import org.osc.core.broker.service.response.Response;
 import org.osc.core.broker.service.securitygroup.exception.SecurityGroupMemberPartOfAnotherSecurityGroupException;
 import org.osc.core.broker.service.validator.SecurityGroupDtoValidator;
 import org.osc.core.broker.service.validator.SecurityGroupMemberItemDtoValidator;
+import org.osc.core.common.controller.ControllerType;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;

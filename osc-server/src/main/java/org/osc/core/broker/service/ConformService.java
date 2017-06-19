@@ -29,7 +29,6 @@ import org.osc.core.broker.job.JobQueuer;
 import org.osc.core.broker.job.JobQueuer.JobRequest;
 import org.osc.core.broker.job.Task;
 import org.osc.core.broker.job.TaskGraph;
-import org.osc.core.broker.job.TaskGuard;
 import org.osc.core.broker.job.lock.LockObjectReference;
 import org.osc.core.broker.job.lock.LockObjectReference.ObjectType;
 import org.osc.core.broker.job.lock.LockRequest;
@@ -60,6 +59,8 @@ import org.osc.core.broker.service.tasks.conformance.securitygroupinterface.MgrS
 import org.osc.core.broker.service.tasks.conformance.virtualizationconnector.CheckSSLConnectivityVcTask;
 import org.osc.core.broker.service.transactions.CompleteJobTransaction;
 import org.osc.core.broker.service.transactions.CompleteJobTransactionInput;
+import org.osc.core.common.job.TaskGuard;
+import org.osc.core.common.manager.ManagerType;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
