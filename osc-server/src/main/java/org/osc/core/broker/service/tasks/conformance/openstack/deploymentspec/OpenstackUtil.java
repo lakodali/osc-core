@@ -16,7 +16,6 @@
  *******************************************************************************/
 package org.osc.core.broker.service.tasks.conformance.openstack.deploymentspec;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openstack4j.model.compute.InterfaceAttachment;
 import org.openstack4j.model.compute.PortState;
