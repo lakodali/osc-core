@@ -42,6 +42,7 @@ public class KeystoneProvider {
     }
     public static KeystoneProvider getInstance(Endpoint endPoint) {
         if(instance == null || !instance.endPoint.equals(endPoint)) {
+            os = null;
             instance = new KeystoneProvider(endPoint);
         }
         return instance;
