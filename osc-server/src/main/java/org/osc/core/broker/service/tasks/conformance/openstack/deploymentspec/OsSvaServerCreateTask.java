@@ -138,17 +138,14 @@ public class OsSvaServerCreateTask extends TransactionalTask {
         // TODO: sjallapx - Hack to workaround issue SimpleDateFormat parse errors due to JCloud on some partner environments.
         boolean createServerWithNoOSTSecurityGroup = this.dai.getVirtualSystem().getVirtualizationConnector().isControllerDefined()
                 ? this.apiFactoryService.supportsPortGroup(this.dai.getVirtualSystem()) : false;
-        if (createServerWithNoOSTSecurityGroup) {
-            createdServer = nova.createServer(ds.getRegion(), availabilityZone, applianceName,
-                    imageRefId, flavorRef, generateBootstrapInfo(vs, applianceName), ds.getManagementNetworkId(),
-                    ds.getInspectionNetworkId(), applianceSoftwareVersion.hasAdditionalNicForInspection(),
-                    null);
-        } else {
-            createdServer = nova.createServer(ds.getRegion(), availabilityZone, applianceName,
-                    imageRefId, flavorRef, generateBootstrapInfo(vs, applianceName), ds.getManagementNetworkId(),
-                    ds.getInspectionNetworkId(), applianceSoftwareVersion.hasAdditionalNicForInspection(),
-                    sgReference.getSgRefName());
-        }
+
+        String sgRefName = createServerWithNoOSTSecurityGroup ? null : sgReference.getSgRefName();
+
+        createdServer = nova.createServer(ds.getRegion(), availabilityZone, applianceName,
+                imageRefId, flavorRef, generateBootstrapInfo(vs, applianceName), ds.getManagementNetworkId(),
+                ds.getInspectionNetworkId(), applianceSoftwareVersion.hasAdditionalNicForInspection(),
+                sgRefName);
+
         this.dai.updateDaiOpenstackSvaInfo(createdServer.getServerId(),
                 createdServer.getIngressInspectionMacAddr(),
                 createdServer.getIngressInspectionPortId(),

@@ -274,8 +274,7 @@ public class Openstack4JNova extends BaseOpenstack4jApi {
     public synchronized void deleteFloatingIp(String region, String ip, String serverId) {
         getOs().useRegion(region);
         log.info("Deleting Floating ip: " + ip + " with serverId: " + serverId);
-        Server server = getOs().compute().servers().get(serverId);
-        ActionResponse actionResponse = getOs().compute().floatingIps().removeFloatingIP(server, ip);
+        ActionResponse actionResponse = getOs().compute().floatingIps().removeFloatingIP(serverId, ip);
         if (!actionResponse.isSuccess()) {
             log.warn("IP : " + ip + " in server id: " + serverId + " not found.");
         }

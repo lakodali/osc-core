@@ -161,10 +161,16 @@ public class Openstack4JNeutron extends BaseOpenstack4jApi {
      * @return true if successfully deleted
      */
     public boolean deletePortById(String region, String portId) {
+        boolean success = true;
         getOs().useRegion(region);
-        ActionResponse delete = getOs().networking().port().delete(portId);
+
+        Port port = getOs().networking().port().get(portId);
+        if(port != null){
+            ActionResponse delete = getOs().networking().port().delete(portId);
+            success = delete.isSuccess();
+        }
         getOs().removeRegion();
-        return delete.isSuccess();
+        return success;
     }
 
     public SecurityGroup getSecurityGroupById(String region, String id) {
