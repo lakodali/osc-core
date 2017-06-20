@@ -43,7 +43,7 @@ public class ListHostService extends ServiceDispatcher<BaseOpenStackRequest, Lis
         OSCEntityManager<VirtualSystem> emgr = new OSCEntityManager<>(VirtualSystem.class, em, this.txBroadcastUtil);
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
 
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
         List<HostDto> hostList = novaApi.getComputeHosts(request.getRegion())
                 .stream().map(host -> new HostDto(host, host)).collect(Collectors.toList());
         return new ListResponse<>(hostList);

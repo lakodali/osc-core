@@ -45,7 +45,7 @@ public class ListHostAggregateService extends ServiceDispatcher<BaseOpenStackReq
 
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
 
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
         List<? extends HostAggregate> hostAggregatesList = novaApi.listHostAggregates(request.getRegion());
         List<HostAggregateDto> hostAggrDtoList = hostAggregatesList.stream().map(this::toHostAggregateDto).collect(Collectors.toList());
         return new ListResponse<>(hostAggrDtoList);

@@ -38,6 +38,9 @@ public class SecurityGroupDto extends BaseDto {
     @ApiModelProperty(required = true)
     private String tenantName;
 
+    @ApiModelProperty(required = true)
+    private String domainId;
+
     @ApiModelProperty(readOnly = true)
     private boolean markForDeletion = false;
 
@@ -82,6 +85,14 @@ public class SecurityGroupDto extends BaseDto {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
+    }
+
+    public String getDomainId() {
+        return domainId;
+    }
+
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
     public boolean isMarkForDeletion() {

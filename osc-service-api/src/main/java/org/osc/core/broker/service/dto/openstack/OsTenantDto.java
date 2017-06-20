@@ -20,10 +20,12 @@ public class OsTenantDto {
 
     private String id;
     private String name;
+    private String domainId;
 
-    public OsTenantDto(String name, String id) {
+    public OsTenantDto(String name, String domainId, String id) {
         this.id = id;
         this.name = name;
+        this.domainId = domainId;
     }
 
     public String getId() {
@@ -42,4 +44,11 @@ public class OsTenantDto {
         this.name = name;
     }
 
+    public String getDomainId() {
+        return domainId;
+    }
+
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
+    }
 }

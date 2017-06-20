@@ -90,7 +90,7 @@ public abstract class BaseSecurityGroupService<I extends Request, O extends Resp
             throw new VmidcBrokerValidationException("Project: '" + dto.getTenantName() + "' does not exist.");
         }
 
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, project.getName(), vc.getAdminDomainName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, project.getName(), vc.getAdminDomainId()));
         return new ArrayList<>(novaApi.listRegions());
     }
 

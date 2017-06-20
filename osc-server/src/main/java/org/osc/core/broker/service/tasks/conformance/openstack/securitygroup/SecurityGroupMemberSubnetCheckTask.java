@@ -74,7 +74,7 @@ public class SecurityGroupMemberSubnetCheckTask extends TransactionalMetaTask {
 
         SecurityGroup sg = this.sgm.getSecurityGroup();
 
-        Openstack4JNeutron neutron = new Openstack4JNeutron(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainName()));
+        Openstack4JNeutron neutron = new Openstack4JNeutron(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainId()));
         org.openstack4j.model.network.Subnet subnet = neutron.getSubnetById(this.subnet.getRegion(), this.subnet.getOpenstackId());
 
         if (subnet == null || this.sgm.getMarkedForDeletion()) {

@@ -135,13 +135,13 @@ public class VirtualizationConnectorServiceData {
 
     private static void setOpenStackParams(VirtualizationConnectorDto vcDto,
             String tenantName,
-            String domainName,
+            String domainId,
             String rabbitMquser,
             String rabbitMqpassword,
             String rabbitMqport,
             String controllerTypeStr){
 
-        vcDto.setAdminDomainName(domainName);
+        vcDto.setAdminDomainId(domainId);
         vcDto.setAdminTenantName(tenantName);
 
         Map<String, String> providerAttributes = new HashMap<>();

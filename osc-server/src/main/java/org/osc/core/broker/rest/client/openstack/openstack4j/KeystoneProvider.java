@@ -21,7 +21,6 @@ import org.openstack4j.api.client.IOSClientBuilder;
 import org.openstack4j.api.types.Facing;
 import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.common.Identifier;
-import org.openstack4j.model.identity.v3.Token;
 import org.openstack4j.openstack.OSFactory;
 
 import java.net.MalformedURLException;
@@ -32,16 +31,17 @@ public class KeystoneProvider {
 
     private static KeystoneProvider instance = null;
     private static OSClient.OSClientV3 os;
-    private Endpoint endPoint;
+    private Endpoint endpoint;
 
     protected KeystoneProvider() {
     }
 
-    protected KeystoneProvider(Endpoint endPoint) {
-        this.endPoint = endPoint;
+    private KeystoneProvider(Endpoint endpoint) {
+        this.endpoint = endpoint;
     }
+
     public static KeystoneProvider getInstance(Endpoint endPoint) {
-        if(instance == null || !instance.endPoint.equals(endPoint)) {
+        if(instance == null || !instance.endpoint.equals(endPoint)) {
             instance = new KeystoneProvider(endPoint);
         }
         return instance;
@@ -49,11 +49,11 @@ public class KeystoneProvider {
 
     OSClient.OSClientV3 getAvailableSession(){
         OSClient.OSClientV3 localOs;
-        Config config = Config.newConfig().withSSLContext(this.endPoint.getSslContext()).withHostnameVerifier((hostname, session) -> true);
-        if(os == null){
+        Config config = Config.newConfig().withSSLContext(this.endpoint.getSslContext()).withHostnameVerifier((hostname, session) -> true);
+        if(os == null || instance.endpoint.getToken() == null){
             String endpointURL;
             try {
-                endpointURL = prepareEndpointURL(this.endPoint);
+                endpointURL = prepareEndpointURL(this.endpoint);
             } catch (URISyntaxException | MalformedURLException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
@@ -61,18 +61,18 @@ public class KeystoneProvider {
             // LOGGER
             OSFactory.enableHttpLoggingFilter(true);
 
-            Identifier domainIdentifier = Identifier.byName(this.endPoint.getDomain());
+            Identifier domainIdentifier = Identifier.byId(this.endpoint.getDomainId());
 
             IOSClientBuilder.V3 keystoneV3Builder = OSFactory.builderV3().perspective(Facing.ADMIN)
                     .endpoint(endpointURL)
-                    .credentials(this.endPoint.getUser(), this.endPoint.getPassword(), domainIdentifier)
-                    .scopeToProject(Identifier.byName(this.endPoint.getTenant()), domainIdentifier)
+                    .credentials(this.endpoint.getUser(), this.endpoint.getPassword(), domainIdentifier)
+                    .scopeToProject(Identifier.byName(this.endpoint.getTenant()), domainIdentifier)
                     .withConfig(config);
 
             localOs = keystoneV3Builder.authenticate();
+            instance.endpoint.setToken(localOs.getToken());
         } else {
-            Token token = os.getToken();
-            localOs = OSFactory.clientFromToken(token, Facing.ADMIN, config);
+            localOs = OSFactory.clientFromToken(instance.endpoint.getToken(), Facing.ADMIN, config);
         }
 
         os = localOs;

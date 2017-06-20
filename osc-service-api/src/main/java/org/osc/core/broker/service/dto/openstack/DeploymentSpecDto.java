@@ -49,6 +49,12 @@ public class DeploymentSpecDto extends BaseDto {
             readOnly = true)
     private String tenantName;
 
+    @ApiModelProperty(
+            value = "The id of the domain on behalf of which the service function instances will be deployed",
+            required = true,
+            readOnly = true)
+    private String domainId;
+
     @ApiModelProperty(value = "The region to which the service function instances will be deployed",
             required = true,
             readOnly = true)
@@ -138,6 +144,14 @@ public class DeploymentSpecDto extends BaseDto {
 
     public void setTenantName(String tenantName) {
         this.tenantName = tenantName;
+    }
+
+    public String getDomainId() {
+        return domainId;
+    }
+
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
     public String getRegion() {

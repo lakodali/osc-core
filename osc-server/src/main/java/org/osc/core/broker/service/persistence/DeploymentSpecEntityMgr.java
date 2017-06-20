@@ -37,8 +37,7 @@ import org.osc.core.broker.service.dto.openstack.HostAggregateDto;
 
 public class DeploymentSpecEntityMgr {
 
-    public static DeploymentSpec createEntity(// for add
-            DeploymentSpecDto dto, VirtualSystem vs) throws Exception {
+    public static DeploymentSpec createEntity(DeploymentSpecDto dto, VirtualSystem vs) throws Exception {
         DeploymentSpec ds = new DeploymentSpec(vs, dto.getRegion(), dto.getTenantId(), dto.getManagementNetworkId(),
                 dto.getInspectionNetworkId(), dto.getFloatingIpPoolName());
         toEntity(ds, dto);
@@ -51,6 +50,7 @@ public class DeploymentSpecEntityMgr {
         ds.setManagementNetworkName(dto.getManagementNetworkName());
         ds.setInspectionNetworkName(dto.getInspectionNetworkName());
         ds.setTenantName(dto.getTenantName());
+        ds.setDomainId(dto.getDomainId());
         ds.setInstanceCount(dto.getCount());
         ds.setShared(dto.isShared());
     }
@@ -60,6 +60,7 @@ public class DeploymentSpecEntityMgr {
         dto.setParentId(ds.getVirtualSystem().getId());
         dto.setName(ds.getName());
         dto.setTenantName(ds.getTenantName());
+        dto.setDomainId(ds.getDomainId());
         dto.setTenantId(ds.getTenantId());
         dto.setRegion(ds.getRegion());
         dto.setFloatingIpPoolName(ds.getFloatingIpPoolName());

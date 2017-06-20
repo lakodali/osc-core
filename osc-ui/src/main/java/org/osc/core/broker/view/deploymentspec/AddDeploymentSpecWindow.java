@@ -78,6 +78,7 @@ public class AddDeploymentSpecWindow extends BaseDeploymentSpecWindow {
                 dto.setName(this.name.getValue().trim());
                 dto.setTenantId(((OsTenantDto) this.tenant.getValue()).getId());
                 dto.setTenantName(((OsTenantDto) this.tenant.getValue()).getName());
+                dto.setDomainId(((OsTenantDto) this.tenant.getValue()).getDomainId());
                 dto.setParentId(this.vsId);
                 dto.setCount(this.count.getValue());
                 dto.setShared(this.shared.getValue() == null ? false : this.shared.getValue());
@@ -116,7 +117,7 @@ public class AddDeploymentSpecWindow extends BaseDeploymentSpecWindow {
                     }
                     dto.setHostAggregates(hostAggrDtoSet);
                 }
-                BaseRequest<DeploymentSpecDto> req = new BaseRequest<DeploymentSpecDto>();
+                BaseRequest<DeploymentSpecDto> req = new BaseRequest<>();
                 req.setDto(dto);
 
                 BaseJobResponse response = this.addDeploymentSpecService.dispatch(req);

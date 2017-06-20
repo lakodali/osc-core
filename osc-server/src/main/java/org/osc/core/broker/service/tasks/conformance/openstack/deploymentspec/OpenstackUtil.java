@@ -344,7 +344,7 @@ public class OpenstackUtil {
         return OpenstackUtil.extractDomainId(
                 dai.getDeploymentSpec().getTenantId(),
                 tenantId,
-                vc.getAdminDomainName(),
+                vc.getAdminDomainId(),
                 vc,
                 Arrays.asList(ingressPort));
     }
@@ -467,7 +467,7 @@ public class OpenstackUtil {
     public static void discoverVmForPort(EntityManager em, String region, SecurityGroup sg, Port osPort, VMPort vmPort)
             throws IOException, EncryptionException {
 
-        Openstack4JNova nova = new Openstack4JNova(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainName()));
+        Openstack4JNova nova = new Openstack4JNova(new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainId()));
         Server osVm = nova.getServer(region, osPort.getDeviceId());
         if (null == osVm) {
             OSCEntityManager.delete(em, vmPort, StaticRegistry.transactionalBroadcastUtil());

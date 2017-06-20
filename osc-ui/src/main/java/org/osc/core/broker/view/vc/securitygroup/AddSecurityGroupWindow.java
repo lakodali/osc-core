@@ -76,6 +76,7 @@ public class AddSecurityGroupWindow extends BaseSecurityGroupWindow {
                 dto.setName(this.name.getValue().trim());
                 dto.setTenantId(((OsTenantDto) this.tenant.getValue()).getId());
                 dto.setTenantName(((OsTenantDto) this.tenant.getValue()).getName());
+                dto.setDomainId(((OsTenantDto) this.tenant.getValue()).getDomainId());
                 dto.setProtectAll(this.protectionTypeOption.getValue() == TYPE_ALL);
 
                 request.setDto(dto);

@@ -176,6 +176,7 @@ public class UpdateDeploymentSpecWindow extends BaseDeploymentSpecWindow {
                 requestDto.setName(this.name.getValue().trim());
                 requestDto.setTenantId(((OsTenantDto) this.tenant.getValue()).getId());
                 requestDto.setTenantName(((OsTenantDto) this.tenant.getValue()).getName());
+                requestDto.setDomainId(((OsTenantDto) this.tenant.getValue()).getDomainId());
                 requestDto.setCount(this.count.getValue());
                 requestDto.setShared(this.shared.getValue() == null ? false : this.shared.getValue());
                 requestDto.setFloatingIpPoolName((String) this.floatingIpPool.getValue());

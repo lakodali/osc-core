@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.osc.core.broker.service.openstack;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -38,7 +39,6 @@ public class ListTenantService extends ServiceDispatcher<BaseIdRequest, ListResp
 
     @Override
     public ListResponse<OsTenantDto> exec(BaseIdRequest request, EntityManager em) throws Exception {
-        ListResponse<OsTenantDto> response = new ListResponse<>();
 
         // Initializing Entity Manager
         OSCEntityManager<VirtualSystem> emgr = new OSCEntityManager<>(VirtualSystem.class, em, this.txBroadcastUtil);
@@ -47,8 +47,8 @@ public class ListTenantService extends ServiceDispatcher<BaseIdRequest, ListResp
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
 
         Openstack4jKeystone keystoneApi = new Openstack4jKeystone(new Endpoint(vc));
-        response.setList(keystoneApi.listProjects().stream()
-                .map(tenant -> new OsTenantDto(tenant.getName(), tenant.getId())).collect(Collectors.toList()));
-        return response;
+        List<OsTenantDto> tenantDtos = keystoneApi.listProjects().stream()
+                .map(tenant -> new OsTenantDto(tenant.getName(), tenant.getDomainId(), tenant.getId())).collect(Collectors.toList());
+        return new ListResponse<>(tenantDtos);
     }
 }

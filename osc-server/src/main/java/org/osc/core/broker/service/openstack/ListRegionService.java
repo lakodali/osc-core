@@ -41,7 +41,7 @@ public class ListRegionService extends ServiceDispatcher<BaseOpenStackRequest, L
         OSCEntityManager<VirtualSystem> emgr = new OSCEntityManager<>(VirtualSystem.class, em, this.txBroadcastUtil);
         // to do mapping
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
         List<String> strings = novaApi.listRegions().stream().collect(Collectors.toList());
         return new ListResponse<>(strings);
     }

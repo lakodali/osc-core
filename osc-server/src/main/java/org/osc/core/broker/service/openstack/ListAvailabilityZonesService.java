@@ -49,7 +49,7 @@ public class ListAvailabilityZonesService
 
         // to do mapping
         VirtualizationConnector vc = emgr.findByPrimaryKey(request.getId()).getVirtualizationConnector();
-        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+        Openstack4JNova novaApi = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
         for (String region : novaApi.listRegions()) {
             for (AvailabilityZone az : novaApi.listAvailabilityZones(region)) {
                 AvailabilityZoneDto azDto = new AvailabilityZoneDto();

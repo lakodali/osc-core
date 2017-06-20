@@ -186,7 +186,7 @@ public class OsVMNotificationListener extends OsNotificationListener {
 
         try {
 
-            VmDiscoveryCache vmCache = new VmDiscoveryCache(this.vc, this.vc.getProviderAdminTenantName(), this.vc.getAdminDomainName());
+            VmDiscoveryCache vmCache = new VmDiscoveryCache(this.vc, this.vc.getProviderAdminTenantName(), this.vc.getAdminDomainId());
 
             // parse Region from incoming Notification message
             String region = OsNotificationUtil.getPropertyFromNotificationMessage(message, REGION_NOTIFICATION_KEY);

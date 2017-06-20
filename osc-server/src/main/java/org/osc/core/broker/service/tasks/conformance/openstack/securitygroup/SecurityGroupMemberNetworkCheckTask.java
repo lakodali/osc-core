@@ -76,7 +76,7 @@ public class SecurityGroupMemberNetworkCheckTask extends TransactionalMetaTask {
 
         SecurityGroup sg = this.sgm.getSecurityGroup();
 
-        Endpoint endPoint = new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainName());
+        Endpoint endPoint = new Endpoint(sg.getVirtualizationConnector(), sg.getTenantName(), sg.getDomainId());
         Openstack4JNeutron neutron = new Openstack4JNeutron(endPoint);
         org.openstack4j.model.network.Network neutronNetwork = neutron.getNetworkById(this.network.getRegion(),
                 this.network.getOpenstackId());
