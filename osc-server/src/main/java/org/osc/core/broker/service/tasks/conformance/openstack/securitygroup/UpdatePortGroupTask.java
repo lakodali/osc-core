@@ -68,7 +68,7 @@ public class UpdatePortGroupTask  extends TransactionalTask{
         }
 
         String domainId = OpenstackUtil.extractDomainId(this.securityGroup.getTenantId(), this.securityGroup.getTenantName(),
-                this.securityGroup.getDomainName(), this.securityGroup.getVirtualizationConnector(), protectedPorts);
+                this.securityGroup.getDomainId(), this.securityGroup.getVirtualizationConnector(), protectedPorts);
         if (domainId == null){
             throw new Exception(String.format("Failed to retrieve domainId for given tenant: '%s' and Security Group: '%s",
                     this.securityGroup.getTenantName(), this.securityGroup.getName()));

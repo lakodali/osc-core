@@ -378,7 +378,7 @@ public class Schema {
                 "virtualization_type varchar(255) not null," +
                 "controller_type varchar(255) not null," +
                 "admin_tenant_name varchar(255)," +
-                "admin_domain_name varchar(255)," +
+                "admin_domain_id varchar(255)," +
                 "last_job_id_fk bigint," +
                 "primary key (id)" +
             ");",
@@ -424,7 +424,7 @@ public class Schema {
                    "vc_fk bigint not null," +
                    "tenant_id varchar(255)," +
                    "tenant_name varchar(255)," +
-                   "domain_name varchar(255)," +
+                   "domain_id varchar(255)," +
                    "protect_all bit not null default 1," +
                    "primary key (id)" +
                    ");",
@@ -513,7 +513,7 @@ public class Schema {
                 "version bigint," +
                 "name varchar(255) not null," +
                 "region varchar(255) not null," +
-                "domain_name varchar(255) not null," +
+                "domain_id varchar(255) not null," +
                 "tenant_name varchar(255) not null," +
                 "tenant_id varchar(255) not null," +
                 "management_network_name varchar(255) not null," +

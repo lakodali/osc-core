@@ -154,7 +154,7 @@ public class OsDAIConformanceCheckMetaTask extends TransactionalMetaTask {
         log.info("Checking DAI: " + this.dai.getName());
 
         VirtualizationConnector vc = ds.getVirtualSystem().getVirtualizationConnector();
-        Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainName());
+        Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainId());
         Openstack4JNova nova = new Openstack4JNova(endPoint);
 
         Server sva = null;
@@ -229,7 +229,7 @@ public class OsDAIConformanceCheckMetaTask extends TransactionalMetaTask {
             InspectionPortElement inspectionPort = null;
             if (this.apiFactoryService.supportsPortGroup(this.dai.getVirtualSystem())) {
                 DeploymentSpec ds = this.dai.getDeploymentSpec();
-                String domainId = OpenstackUtil.extractDomainId(ds.getTenantId(), ds.getTenantName(), ds.getDomainName(),
+                String domainId = OpenstackUtil.extractDomainId(ds.getTenantId(), ds.getTenantName(), ds.getDomainId(),
                         ds.getVirtualSystem().getVirtualizationConnector(), new ArrayList<>(Arrays.asList(ingressPort)));
                 if (domainId != null) {
                     ingressPort.setParentId(domainId);

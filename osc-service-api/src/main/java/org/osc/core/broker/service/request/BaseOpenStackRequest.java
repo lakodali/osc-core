@@ -18,17 +18,17 @@ package org.osc.core.broker.service.request;
 
 public class BaseOpenStackRequest extends BaseIdRequest {
 
-    private String domainName;
+    private String domainId;
     private String tenantName;
     private String tenantId;
     private String region;
 
-    public String getDomainName() {
-        return domainName;
+    public String getDomainId() {
+        return domainId;
     }
 
-    public void setDomainName(String domainName) {
-        this.domainName = domainName;
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
     public String getTenantName() {

@@ -254,13 +254,13 @@ public class ReleaseUpgradeMgr {
         // @formatter:off
 
         execSql(stmt, "alter table VIRTUALIZATION_CONNECTOR "
-                + "add column admin_domain_name varchar(255);");
+                + "add column admin_domain_id varchar(255);");
 
         execSql(stmt, "alter table SECURITY_GROUP "
-                + "add column domain_name varchar(255);");
+                + "add column domain_id varchar(255);");
 
         execSql(stmt, "alter table DEPLOYMENT_SPEC "
-                + "add column domain_name varchar(255);");
+                + "add column domain_id varchar(255);");
 
         // @formatter:on
     }

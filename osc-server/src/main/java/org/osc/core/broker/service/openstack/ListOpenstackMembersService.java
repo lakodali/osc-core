@@ -85,7 +85,7 @@ public class ListOpenstackMembersService
             List<String> existingSvaOsIds = DistributedApplianceInstanceEntityMgr.listOsServerIdByVcId(em, vc.getId());
             existingMemberIds.addAll(existingSvaOsIds);
 
-            Openstack4JNova nova = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+            Openstack4JNova nova = new Openstack4JNova(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
             for (Server vmResource : nova.listServers(region)) {
                 if (!existingMemberIds.contains(vmResource.getId())) {
                     openstackMemberList.add(new SecurityGroupMemberItemDto(region, vmResource.getName(), vmResource
@@ -94,7 +94,7 @@ public class ListOpenstackMembersService
             }
 
         } else if (SecurityGroupMemberType.fromText(request.getType()) == SecurityGroupMemberType.NETWORK) {
-            Openstack4JNeutron neutronApi = new Openstack4JNeutron(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+            Openstack4JNeutron neutronApi = new Openstack4JNeutron(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
             List<Network> tenantNetworks = neutronApi.listNetworkByTenant(request.getRegion(), request.getTenantId());
             for (Network tenantNetwork : tenantNetworks) {
                 if (!existingMemberIds.contains(tenantNetwork.getId())) {
@@ -103,7 +103,7 @@ public class ListOpenstackMembersService
                 }
             }
         } else if (SecurityGroupMemberType.fromText(request.getType()) == SecurityGroupMemberType.SUBNET) {
-            Openstack4JNeutron neutronApi = new Openstack4JNeutron(new Endpoint(vc, request.getTenantName(), request.getDomainName()));
+            Openstack4JNeutron neutronApi = new Openstack4JNeutron(new Endpoint(vc, request.getTenantName(), request.getDomainId()));
             List<Subnet> tenantSubnets = neutronApi.listSubnetByTenant(request.getRegion(), request.getTenantId());
             for (Subnet subnet : tenantSubnets) {
                 if (!existingMemberIds.contains(subnet.getId())) {

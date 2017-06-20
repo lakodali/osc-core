@@ -20,6 +20,7 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.openstack4j.model.identity.v3.Token;
 import org.osc.core.broker.model.entities.virtualization.VirtualizationConnector;
 import org.osc.core.broker.model.entities.virtualization.openstack.DeploymentSpec;
 import org.osc.core.broker.service.api.server.EncryptionException;
@@ -29,16 +30,17 @@ import org.osc.core.broker.util.crypto.SslContextProvider;
 public class Endpoint {
 
     private String endPointIP;
-    private String domain;
+    private String domainId;
     private String tenant;
     private String user;
     private String password;
     private boolean isHttps;
     private SSLContext sslContext;
+    private Token token;
 
-    public Endpoint(String endPointIP, String domain, String tenant, String user, String password, boolean isHttps, SSLContext sslContext) {
+    public Endpoint(String endPointIP, String domainId, String tenant, String user, String password, boolean isHttps, SSLContext sslContext) {
         this.endPointIP = endPointIP;
-        this.domain = domain;
+        this.domainId = domainId;
         this.tenant = tenant;
         this.user = user;
         this.password = password;
@@ -48,7 +50,7 @@ public class Endpoint {
 
     public Endpoint(VirtualizationConnector vc) throws EncryptionException {
         this.endPointIP = vc.getProviderIpAddress();
-        this.domain = vc.getAdminDomainName();
+        this.domainId = vc.getAdminDomainId();
         this.tenant = vc.getProviderAdminTenantName();
         this.user = vc.getProviderUsername();
         this.password = StaticRegistry.encryptionApi().decryptAESCTR(vc.getProviderPassword());
@@ -57,13 +59,13 @@ public class Endpoint {
     }
 
     public Endpoint(DeploymentSpec ds) throws EncryptionException {
-        this(ds.getVirtualSystem().getVirtualizationConnector(), ds.getTenantName(), "Default"); //:TODO fix missing domain
+        this(ds.getVirtualSystem().getVirtualizationConnector(), ds.getTenantName(), "Default"); //:TODO fix missing domainId
     }
 
-    public Endpoint(VirtualizationConnector vc, String tenant, String domain) throws EncryptionException {
+    public Endpoint(VirtualizationConnector vc, String tenant, String domainId) throws EncryptionException {
         this.endPointIP = vc.getProviderIpAddress();
         this.tenant = tenant;
-        this.domain = domain;
+        this.domainId = domainId;
         this.user = vc.getProviderUsername();
         this.password = StaticRegistry.encryptionApi().decryptAESCTR(vc.getProviderPassword());
         this.isHttps = vc.isProviderHttps();
@@ -101,12 +103,12 @@ public class Endpoint {
         this.password = password;
     }
 
-    public String getDomain() {
-        return this.domain;
+    public String getDomainId() {
+        return this.domainId;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
     public boolean isHttps() {
@@ -115,6 +117,14 @@ public class Endpoint {
 
     public SSLContext getSslContext() {
         return this.sslContext;
+    }
+
+    public Token getToken() {
+        return this.token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 
     @Override
@@ -133,7 +143,7 @@ public class Endpoint {
 
         return new EqualsBuilder()
                 .append(getEndPointIP(), other.getEndPointIP())
-                .append(getDomain(), other.getDomain())
+                .append(getDomainId(), other.getDomainId())
                 .append(getTenant(), other.getTenant())
                 .append(getUser(), other.getUser())
                 .append(getPassword(), other.getPassword())
@@ -145,7 +155,7 @@ public class Endpoint {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(getEndPointIP())
-                .append(getDomain())
+                .append(getDomainId())
                 .append(getTenant())
                 .append(getUser())
                 .append(getPassword())

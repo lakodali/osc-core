@@ -482,6 +482,7 @@ public abstract class BaseSecurityGroupWindow extends LoadingIndicatorCRUDBaseWi
 
                 BaseOpenStackRequest req = new BaseOpenStackRequest();
                 req.setTenantName(tenantDto.getName());
+                req.setDomainId(tenantDto.getDomainId());
                 req.setTenantId(tenantDto.getId());
                 req.setId(this.currentSecurityGroup.getParentId());
 
@@ -521,6 +522,7 @@ public abstract class BaseSecurityGroupWindow extends LoadingIndicatorCRUDBaseWi
                 }
                 req.setParentId(this.currentSecurityGroup.getParentId());
                 req.setTenantName(tenantDto.getName());
+                req.setDomainId(tenantDto.getDomainId());
                 req.setTenantId(tenantDto.getId());
                 req.setRegion(region);
                 req.setType(memberType.toString());

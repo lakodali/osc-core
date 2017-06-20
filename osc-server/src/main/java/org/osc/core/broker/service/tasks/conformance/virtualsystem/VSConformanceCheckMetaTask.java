@@ -188,7 +188,7 @@ public class VSConformanceCheckMetaTask extends TransactionalMetaTask {
 
         if (vc.getVirtualizationType() == VirtualizationType.OPENSTACK) {
             for (DeploymentSpec ds : this.vs.getDeploymentSpecs()) {
-                Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainName());
+                Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainId());
                 tg.appendTask(this.dsConformanceCheckMetaTask.create(ds, endPoint));
             }
             for (OsImageReference image : this.vs.getOsImageReference()) {
@@ -215,7 +215,7 @@ public class VSConformanceCheckMetaTask extends TransactionalMetaTask {
 
             // Conformance of Deployment Specs
             for (DeploymentSpec ds : this.vs.getDeploymentSpecs()) {
-                Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainName());
+                Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainId());
                 UnlockObjectMetaTask dsUnlockTask = null;
                 try {
                     DistributedAppliance da = ds.getVirtualSystem().getDistributedAppliance();

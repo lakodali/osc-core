@@ -76,7 +76,7 @@ public class DeleteInspectionPortTask extends TransactionalTask {
             String domainId = OpenstackUtil.extractDomainId(
                     ds.getTenantId(),
                     ds.getTenantName(),
-                    ds.getDomainName(),
+                    ds.getDomainId(),
                     ds.getVirtualSystem().getVirtualizationConnector(),
                     Arrays.asList(ingressPort));
 

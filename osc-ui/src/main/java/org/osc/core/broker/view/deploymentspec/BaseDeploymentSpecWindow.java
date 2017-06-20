@@ -267,6 +267,7 @@ public abstract class BaseDeploymentSpecWindow extends LoadingIndicatorCRUDBaseW
                 req.setId(this.vsId);
                 req.setRegion((String) this.region.getValue());
                 req.setTenantName(selectedTenant.getName());
+                req.setDomainId(selectedTenant.getDomainId());
                 req.setTenantId(selectedTenant.getId());
 
                 List<OsNetworkDto> res = this.listNetworkService.dispatch(req).getList();
@@ -361,6 +362,7 @@ public abstract class BaseDeploymentSpecWindow extends LoadingIndicatorCRUDBaseW
 
                 BaseOpenStackRequest req = new BaseOpenStackRequest();
                 req.setTenantName(tenantDto.getName());
+                req.setDomainId(tenantDto.getDomainId());
                 req.setId(this.vsId);
                 ListResponse<String> response = this.listRegionService.dispatch(req);
 
@@ -390,6 +392,7 @@ public abstract class BaseDeploymentSpecWindow extends LoadingIndicatorCRUDBaseW
                 BaseOpenStackRequest req = new BaseOpenStackRequest();
                 req.setId(this.vsId);
                 req.setTenantName(selectedTenant.getName());
+                req.setDomainId(selectedTenant.getDomainId());
                 req.setTenantId(selectedTenant.getId());
                 req.setRegion((String) this.region.getValue());
 
@@ -446,6 +449,7 @@ public abstract class BaseDeploymentSpecWindow extends LoadingIndicatorCRUDBaseW
                 BaseOpenStackRequest req = new BaseOpenStackRequest();
                 req.setId(this.vsId);
                 req.setTenantName(selectedTenant.getName());
+                req.setDomainId(selectedTenant.getDomainId());
                 req.setTenantId(selectedTenant.getId());
                 req.setRegion((String) this.region.getValue());
 

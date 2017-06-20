@@ -113,7 +113,7 @@ public class OsSvaServerCreateTask extends TransactionalTask {
         VirtualSystem vs = ds.getVirtualSystem();
 
         VirtualizationConnector vc = vs.getVirtualizationConnector();
-        Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainName());
+        Endpoint endPoint = new Endpoint(vc, ds.getTenantName(), ds.getDomainId());
         SdnRedirectionApi controller = null;
         Openstack4JNova nova = new Openstack4JNova(endPoint);
         this.dai = DistributedApplianceInstanceEntityMgr.findById(em, this.dai.getId());
@@ -171,7 +171,7 @@ public class OsSvaServerCreateTask extends TransactionalTask {
                     String domainId = OpenstackUtil.extractDomainId(
                             ds.getTenantId(),
                             ds.getTenantName(),
-                            ds.getDomainName(),
+                            ds.getDomainId(),
                             ds.getVirtualSystem().getVirtualizationConnector(),
                             Arrays.asList(ingressPort));
                     ingressPort.setParentId(domainId);

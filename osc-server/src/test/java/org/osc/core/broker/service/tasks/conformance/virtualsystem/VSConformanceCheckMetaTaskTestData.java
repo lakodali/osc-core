@@ -172,7 +172,7 @@ public class VSConformanceCheckMetaTaskTestData {
         DeploymentSpec ds = (DeploymentSpec) vs.getDeploymentSpecs().toArray()[0];
 
         TaskGraph expectedGraph = new TaskGraph();
-        Endpoint endPoint = new Endpoint(vs.getVirtualizationConnector(), ds.getTenantName(), ds.getDomainName());
+        Endpoint endPoint = new Endpoint(vs.getVirtualizationConnector(), ds.getTenantName(), ds.getDomainId());
         expectedGraph.appendTask(new DSConformanceCheckMetaTask().create(ds, endPoint));
         expectedGraph.appendTask(UPDATE_OPENSTACK_NO_DEPLOYMENT_SPEC_TASK, TaskGuard.ALL_PREDECESSORS_COMPLETED);
         expectedGraph.appendTask(new GenerateVSSKeysTask().create(vs));
@@ -236,7 +236,7 @@ public class VSConformanceCheckMetaTaskTestData {
         DeploymentSpec ds = (DeploymentSpec) vs.getDeploymentSpecs().toArray()[0];
 
         TaskGraph expectedGraph = new TaskGraph();
-        Endpoint endPoint = new Endpoint(vs.getVirtualizationConnector(), ds.getTenantName(), ds.getDomainName());
+        Endpoint endPoint = new Endpoint(vs.getVirtualizationConnector(), ds.getTenantName(), ds.getDomainId());
         expectedGraph.appendTask(new DSConformanceCheckMetaTask().create(ds, endPoint));
         expectedGraph.appendTask(new SecurityGroupCleanupCheckMetaTask().create(vs), TaskGuard.ALL_ANCESTORS_SUCCEEDED);
         expectedGraph.appendTask(new MgrDeleteVSSDeviceTask().create(vs), TaskGuard.ALL_ANCESTORS_SUCCEEDED);
@@ -265,7 +265,7 @@ public class VSConformanceCheckMetaTaskTestData {
 
         TaskGraph expectedGraph = new TaskGraph();
         Endpoint endPoint = new Endpoint(vs.getVirtualizationConnector(), vs.getVirtualizationConnector().getProviderAdminTenantName(),
-                vs.getVirtualizationConnector().getAdminDomainName());
+                vs.getVirtualizationConnector().getAdminDomainId());
         expectedGraph.appendTask(new DeleteImageFromGlanceTask().create(image.getRegion(), image, endPoint));
         expectedGraph.appendTask(new SecurityGroupCleanupCheckMetaTask().create(vs), TaskGuard.ALL_ANCESTORS_SUCCEEDED);
         expectedGraph.appendTask(new MgrDeleteVSSDeviceTask().create(vs), TaskGuard.ALL_ANCESTORS_SUCCEEDED);
@@ -294,7 +294,7 @@ public class VSConformanceCheckMetaTaskTestData {
 
         TaskGraph expectedGraph = new TaskGraph();
         Endpoint endPoint = new Endpoint(vs.getVirtualizationConnector(), vs.getVirtualizationConnector().getProviderAdminTenantName(),
-                vs.getVirtualizationConnector().getAdminDomainName());
+                vs.getVirtualizationConnector().getAdminDomainId());
         expectedGraph.appendTask(new DeleteFlavorTask().create(flavor.getRegion(), flavor, endPoint));
         expectedGraph.appendTask(new SecurityGroupCleanupCheckMetaTask().create(vs), TaskGuard.ALL_ANCESTORS_SUCCEEDED);
         expectedGraph.appendTask(new MgrDeleteVSSDeviceTask().create(vs), TaskGuard.ALL_ANCESTORS_SUCCEEDED);
