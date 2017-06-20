@@ -33,7 +33,6 @@
 	org.glassfish.hk2.locator;version='[2.5.0,2.5.1)',\
 	org.glassfish.hk2.osgi-resource-locator;version='[1.0.1,1.0.2)',\
 	org.glassfish.hk2.utils;version='[2.5.0,2.5.1)',\
-	osc-uber-jcloud;version='[1.0.0,1.0.1)',\
 	osc-uber-openstack4j;version='[1.0.0,1.0.1)',\
 	javax.ws.rs-api;version='[2.0.1,2.0.2)',\
 	javax.annotation-api;version='[1.2.0,1.2.1)',\

@@ -81,11 +81,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.osc.core</groupId>
-			<artifactId>osc-uber-jcloud</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.osc.core</groupId>
 			<artifactId>osc-ui</artifactId>
 			<version>${project.version}</version>
 		</dependency>
